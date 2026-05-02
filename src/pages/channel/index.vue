@@ -7,6 +7,7 @@
       <el-table-column prop="id" label="ID" />
       <el-table-column prop="title" label="群名" />
       <el-table-column prop="count" label="人数" />
+      <el-table-column prop="balance_limit_count" label="结余限制数量" />
       <el-table-column prop="create_time" label="创建时间" />
       <el-table-column label="状态">
         <template #default="{ row }">
