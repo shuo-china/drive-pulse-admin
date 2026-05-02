@@ -87,6 +87,21 @@ export const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: "/notice",
+    component: AdminLayout,
+    redirect: "",
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/notice/index.vue"),
+        meta: {
+          title: "消息公告",
+          icon: "ChatLineSquare",
+        },
+      },
+    ],
+  },
+  {
     path: "/setting",
     component: AdminLayout,
     redirect: "/setting/manager",

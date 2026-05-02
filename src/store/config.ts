@@ -2,6 +2,9 @@ import { getConfigInitApi, getConfigInitNoAuthApi } from "@/api/config_group";
 import _ from "lodash";
 
 interface Config {
+  drive_pulse: {
+    content: string;
+  };
   base: {
     title: string;
     description: string;
@@ -31,6 +34,9 @@ interface Config {
 
 const transformReceivedConfig = (res: any) => {
   return {
+    drive_pulse: {
+      content: res.drive_pulse?.content || "",
+    },
     base: {
       title: res.base?.web_site_title || "",
       description: res.base?.web_site_description || "",
