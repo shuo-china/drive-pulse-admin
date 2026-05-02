@@ -16,7 +16,7 @@
       <el-table-column prop="uid" label="编号" :min-width="80" />
       <el-table-column label="头像" :min-width="80">
         <template #default="{ row }">
-          <el-avatar :src="row.avatar_path" />
+          <el-avatar :src="row.avatar_path" :size="35" />
         </template>
       </el-table-column>
       <el-table-column prop="nickname" label="昵称" :min-width="150" />
