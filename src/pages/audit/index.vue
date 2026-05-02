@@ -4,7 +4,7 @@
       <el-table-column prop="user.uid" label="编号" :min-width="80" />
       <el-table-column label="头像" :min-width="80">
         <template #default="{ row }">
-          <el-avatar :src="row.user.avatar_path" />
+          <el-avatar :src="row.user?.avatar_path" />
         </template>
       </el-table-column>
       <el-table-column prop="user.nickname" label="昵称" :min-width="150" />
