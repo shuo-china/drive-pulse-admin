@@ -1,0 +1,33 @@
+import { pagination } from "@/config";
+
+export {};
+
+declare global {
+  type Nullable<T> = null | T;
+
+  type UnRef<T> = T extends Ref<infer V> ? V : T;
+
+  type OptionItem = {
+    label: string;
+    value: string | number;
+  };
+
+  type FileItem = {
+    id: number;
+    key: string;
+    name: string;
+    path: string;
+  };
+
+  type ApiErrorData = {
+    code: string;
+    message: string;
+  };
+
+  type Pagination<T = any> = Record<
+    (typeof pagination)["responseTotalKey"],
+    number
+  > & {
+    [k in (typeof pagination)["responseDataKey"]]: T[];
+  };
+}
