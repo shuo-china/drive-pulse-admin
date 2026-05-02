@@ -81,7 +81,22 @@ export const routes: RouteRecordRaw[] = [
         component: () => import("@/pages/channel/index.vue"),
         meta: {
           title: "群组管理",
-          icon: "ChatLineRound",
+          icon: "DataAnalysis",
+        },
+      },
+    ],
+  },
+  {
+    path: "/notice",
+    component: AdminLayout,
+    redirect: "",
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/notice/index.vue"),
+        meta: {
+          title: "简介管理",
+          icon: "ChatLineSquare",
         },
       },
     ],
