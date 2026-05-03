@@ -9,7 +9,14 @@
           </el-button>
         </div>
       </template>
-      <el-input v-model="content" type="textarea" placeholder="请输入通知内容" class="full-height-textarea" />
+      <div class="mb-4">
+        <div class="mb-2 text-sm text-gray-500">通知标题</div>
+        <el-input v-model="noticeTitle" placeholder="请输入通知标题" />
+      </div>
+      <div class="flex-1 flex flex-col min-h-0">
+        <div class="mb-2 text-sm text-gray-500">通知内容</div>
+        <el-input v-model="noticeContent" type="textarea" placeholder="请输入通知内容" class="full-height-textarea" />
+      </div>
     </el-card>
   </div>
 </template>
@@ -22,9 +29,11 @@ import { useConfigStore } from "@/store/config";
 import { ElMessage } from "element-plus";
 
 const configStore = useConfigStore();
-const content = ref("");
+const noticeTitle = ref("");
+const noticeContent = ref("");
 const submitLoading = ref(false);
-const currentConfigItem = ref<ConfigItem | null>(null);
+const titleConfigItem = ref<ConfigItem | null>(null);
+const contentConfigItem = ref<ConfigItem | null>(null);
 
 const fetchData = async () => {
   try {
@@ -32,10 +41,17 @@ const fetchData = async () => {
     const targetGroup = groupList.find((item) => item.key === "drive_pulse");
     if (targetGroup) {
       const itemList = await getConfigItemListApi({ group_id: targetGroup.id });
-      const targetItem = itemList.find((item) => item.key === "notice");
-      if (targetItem) {
-        currentConfigItem.value = targetItem;
-        content.value = targetItem.value || "";
+
+      const titleItem = itemList.find((item) => item.key === "notice_title");
+      if (titleItem) {
+        titleConfigItem.value = titleItem;
+        noticeTitle.value = titleItem.value || "";
+      }
+
+      const contentItem = itemList.find((item) => item.key === "notice_content");
+      if (contentItem) {
+        contentConfigItem.value = contentItem;
+        noticeContent.value = contentItem.value || "";
       }
     }
   } catch (error) {
@@ -44,17 +60,24 @@ const fetchData = async () => {
 };
 
 const handleSave = async () => {
-  if (!currentConfigItem.value) {
+  if (!titleConfigItem.value || !contentConfigItem.value) {
     ElMessage.warning("未找到配置项");
     return;
   }
   submitLoading.value = true;
   try {
-    await updateConfigItemValueApi({
-      id: currentConfigItem.value.id,
-      type: currentConfigItem.value.type,
-      value: content.value,
-    });
+    await Promise.all([
+      updateConfigItemValueApi({
+        id: titleConfigItem.value.id,
+        type: titleConfigItem.value.type,
+        value: noticeTitle.value,
+      }),
+      updateConfigItemValueApi({
+        id: contentConfigItem.value.id,
+        type: contentConfigItem.value.type,
+        value: noticeContent.value,
+      })
+    ]);
     ElMessage.success("保存成功");
     configStore.initAfterLogin();
   } catch (error) {
