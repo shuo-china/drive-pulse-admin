@@ -37,7 +37,7 @@
             </div>
 
             <!-- 要人方 (目标人) -->
-            <div class="flex items-center gap-x-3 flex-1 min-w-0 justify-end">
+            <div class="flex items-center gap-x-3 flex-1 min-w-0">
               <el-avatar :src="row.target_user?.avatar_path" :size="40" class="shrink-0" />
               <div class="min-w-0">
                 <div class="text-sm font-medium text-gray-900 truncate" :title="row.target_user?.nickname">

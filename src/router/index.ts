@@ -46,6 +46,9 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     redirect: "/audit",
     component: AdminLayout,
+    meta: {
+      roles: ["normal"],
+    },
     children: [
       {
         path: "audit",
@@ -60,6 +63,9 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/user",
     component: AdminLayout,
+    meta: {
+      roles: ["normal"],
+    },
     children: [
       {
         path: "",
@@ -75,6 +81,9 @@ export const routes: RouteRecordRaw[] = [
     path: "/channel",
     component: AdminLayout,
     redirect: "",
+    meta: {
+      roles: [],
+    },
     children: [
       {
         path: "",
@@ -90,6 +99,9 @@ export const routes: RouteRecordRaw[] = [
     path: "/notice",
     component: AdminLayout,
     redirect: "",
+    meta: {
+      roles: [],
+    },
     children: [
       {
         path: "",
@@ -108,6 +120,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "设置",
       icon: "Setting",
+      roles: [],
     },
     children: [
       {

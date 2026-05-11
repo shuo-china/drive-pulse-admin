@@ -34,7 +34,7 @@ export const useManagerStore = defineStore("manager", () => {
     managerInfo.value = {
       id,
       nickname,
-      roles,
+      roles: roles.map((role) => role.key),
       avatar: avatar?.path,
       isTop: !!is_top,
     };

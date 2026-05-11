@@ -1,6 +1,6 @@
 <template>
   <page>
-    <search-form :formProps="{ model: searchParams }" @reset="tableRef?.reset"
+    <search-form :formProps="{ model: searchParams }" @reset="handleReset"
       @search="() => tableRef?.search(searchParams)">
       <el-form-item label="编号" prop="uid">
         <el-input v-model="searchParams.uid" placeholder="请输入编号" clearable />
@@ -8,40 +8,51 @@
       <el-form-item label="昵称" prop="nickname">
         <el-input v-model="searchParams.nickname" placeholder="请输入昵称" clearable />
       </el-form-item>
+      <el-form-item label="结余数量" prop="min_balance_count">
+        <div class="flex items-center gap-1 w-full">
+          <el-input-number v-model="searchParams.min_balance_count" :controls="false" placeholder="最小"
+            class="!w-full" />
+          <span class="text-gray-400">-</span>
+          <el-input-number v-model="searchParams.max_balance_count" :controls="false" placeholder="最大"
+            class="!w-full" />
+        </div>
+      </el-form-item>
     </search-form>
 
     <pro-table ref="tableRef" :request="getUserPaginationApi" :request-options="{
       onSuccess: handleRequestSuccess
     }">
-      <el-table-column prop="uid" label="编号" :min-width="80" />
-      <el-table-column label="头像" :min-width="80">
+      <el-table-column prop="uid" label="编号" :min-width="70" />
+      <el-table-column label="头像" :min-width="70">
         <template #default="{ row }">
           <div class="flex items-center">
             <el-avatar :src="row.avatar_path" :size="35" />
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="nickname" label="昵称" :min-width="150" />
-      <el-table-column v-for="(col, index) in dynamicColumns" :key="col.id" :label="col.title" :min-width="150">
+      <el-table-column prop="nickname" label="昵称" :min-width="180" />
+      <el-table-column v-for="(col, index) in dynamicColumns" :key="col.id" :label="col.title" :min-width="130">
         <template #default="{ row }">
           <el-tag v-if="row.channels[index]?.audit_status === 0" type="info">未申请</el-tag>
           <el-tag v-else-if="row.channels[index]?.audit_status === 1" type="warning">待审核</el-tag>
           <el-tag v-else-if="row.channels[index]?.audit_status === 3" type="danger">已拒绝</el-tag>
           <span v-else>
             结余：<span :class="[
-              row.channels[index]?.balance_count > 0 ? 'text-blue-500' :
+              row.channels[index]?.balance_count > 0 ? 'text-green-500' :
                 row.channels[index]?.balance_count < 0 ? 'text-yellow-500' : ''
             ]">{{ row.channels[index]?.balance_count }}</span>
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="结余限制" :min-width="90">
+      <el-table-column prop="initial_balance" label="结余初始值" :min-width="110" />
+      <el-table-column prop="min_balance" label="结余下限" :min-width="100" />
+      <el-table-column label="是否隐藏" :min-width="90">
         <template #default="{ row }">
-          <el-tag v-if="row.balance_limit === 1" type="primary">限制</el-tag>
-          <el-tag v-else type="danger">无限制</el-tag>
+          <el-tag v-if="row.is_hidden === 0" type="primary">正常</el-tag>
+          <el-tag v-else type="danger">隐藏</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="状态" :min-width="80">
+      <el-table-column label="状态" :min-width="90">
         <template #default="{ row }">
           <el-tag v-if="row.status === 1" type="primary">正常</el-tag>
           <el-tag v-else type="danger">禁用</el-tag>
@@ -49,8 +60,7 @@
       </el-table-column>
       <el-table-column prop="create_time" label="注册时间" :min-width="160" />
       <el-table-column prop="last_login_time" label="最后登录时间" :min-width="160" />
-      <el-table-column prop="last_login_ip" label="最后登录IP" :min-width="160" />
-      <el-table-column label="操作" fixed="right" :width="220">
+      <el-table-column v-if="managerStore?.managerInfo?.isTop" label="操作" fixed="right" :width="165">
         <template #default="{ row }">
           <action-group>
             <action-item>
@@ -58,11 +68,11 @@
             </action-item>
             <action-item>
               <el-button link type="primary" @click="handleOpenDrawer('release', row.id)">
-                放人数据
+                放人
               </el-button>
             </action-item>
             <action-item>
-              <el-button link type="primary" @click="handleOpenDrawer('take', row.id)">要人数据</el-button>
+              <el-button link type="primary" @click="handleOpenDrawer('take', row.id)">要人</el-button>
             </action-item>
           </action-group>
         </template>
@@ -80,6 +90,9 @@ import type { ProTableInstance } from "@/components/ProTable/type";
 import { ref } from "vue";
 import OrderDrawer from "./OrderDrawer.vue";
 import UserForm from "./UserForm.vue";
+import { useManagerStore } from "@/store/manager";
+
+const managerStore = useManagerStore();
 
 const tableRef = ref<ProTableInstance>();
 
@@ -99,9 +112,17 @@ const handleEdit = (id: number) => {
   userFormVisible.value = true;
 };
 
+const handleReset = () => {
+  searchParams.value.min_balance_count = undefined;
+  searchParams.value.max_balance_count = undefined;
+  tableRef.value?.reset();
+};
+
 const searchParams = ref({
   uid: "",
   nickname: "",
+  min_balance_count: undefined as number | undefined,
+  max_balance_count: undefined as number | undefined,
 });
 
 const dynamicColumns = ref<{ id: number; title: string }[]>([]);

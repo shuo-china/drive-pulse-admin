@@ -4,7 +4,7 @@ import type { AxiosRequestConfig } from "axios";
 interface ManagerInfoResponseData {
   id: number;
   nickname: string;
-  roles: string[];
+  roles: { key: string }[];
   is_top: number;
   avatar: FileItem;
 }

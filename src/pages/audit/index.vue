@@ -1,18 +1,18 @@
 <template>
   <page>
     <pro-table ref="tableRef" :request="getApplyPaginationApi">
-      <el-table-column prop="user.uid" label="编号" :min-width="80" />
-      <el-table-column label="头像" :min-width="80">
+      <el-table-column prop="user.uid" label="编号" :min-width="70" />
+      <el-table-column label="头像" :min-width="70">
         <template #default="{ row }">
           <div class="flex items-center">
             <el-avatar :src="row.user?.avatar_path" :size="35" />
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="user.nickname" label="昵称" :min-width="150" />
+      <el-table-column prop="user.nickname" label="昵称" :min-width="180" />
       <el-table-column prop="channel.title" label="申请群" :min-width="150" />
-      <el-table-column prop="create_time" label="申请时间" :min-width="180" />
-      <el-table-column label="操作" fixed="right" :width="180">
+      <el-table-column prop="create_time" label="申请时间" :min-width="160" />
+      <el-table-column label="操作" fixed="right" :width="120">
         <template #default="{ row }">
           <action-group>
             <action-item>

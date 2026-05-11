@@ -4,18 +4,17 @@
       <el-button icon="Plus" type="primary" @click="handleCreate">新增群</el-button>
     </div>
     <pro-table ref="tableRef" :request="getChannelPaginationApi">
-      <el-table-column prop="id" label="ID" />
-      <el-table-column prop="title" label="群名" />
-      <el-table-column prop="count" label="人数" />
-      <el-table-column prop="balance_limit_count" label="结余限制数量" />
-      <el-table-column prop="create_time" label="创建时间" />
-      <el-table-column label="状态">
+      <el-table-column prop="id" label="ID" :min-width="100" />
+      <el-table-column prop="title" label="群名" :min-width="150" />
+      <el-table-column prop="count" label="人数" :min-width="80" />
+      <el-table-column prop="create_time" label="创建时间" :min-width="160" />
+      <el-table-column label="状态" :min-width="90">
         <template #default="{ row }">
           <el-tag v-if="row.status === 1" type="primary">正常</el-tag>
           <el-tag v-else-if="row.status === 2" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" :width="140">
+      <el-table-column label="操作" fixed="right" :width="120">
         <template #default="{ row }">
           <action-group>
             <action-item>
