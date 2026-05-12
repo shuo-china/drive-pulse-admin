@@ -22,7 +22,7 @@
     <pro-table ref="tableRef" :request="getUserPaginationApi" :request-options="{
       onSuccess: handleRequestSuccess
     }">
-      <el-table-column prop="uid" label="编号" :min-width="70" />
+      <el-table-column prop="uid" label="编号" :min-width="80" />
       <el-table-column label="头像" :min-width="70">
         <template #default="{ row }">
           <div class="flex items-center">
