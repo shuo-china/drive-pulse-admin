@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column prop="initial_balance" label="结余初始值" :min-width="110" />
       <el-table-column prop="min_balance" label="结余下限" :min-width="100" />
-      <el-table-column label="是否隐藏" :min-width="90">
+      <el-table-column v-if="managerStore?.managerInfo?.isTop" label="是否隐藏" :min-width="90">
         <template #default="{ row }">
           <el-tag v-if="row.is_hidden === 0" type="primary">正常</el-tag>
           <el-tag v-else type="danger">隐藏</el-tag>
